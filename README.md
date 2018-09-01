@@ -1,1 +1,3 @@
-# CSfun
+# CS Fun
+
+Practice, practice, practice
