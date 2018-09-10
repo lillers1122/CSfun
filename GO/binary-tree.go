@@ -41,7 +41,7 @@ func (n *BinaryTree) search(v int) bool {
 // 2. Insert given int value
 func (n *BinaryTree) add(inputData int) {
 	newNode := Node{inputData, nil, nil }
-	// empty tree
+	//empty tree
 	if n.root == nil {
 		n.root = &newNode
 	} else {
@@ -75,20 +75,48 @@ func insertHelper(current, newOne *Node) {
 }
 
 // 3. Compute height of tree
-func findHeight(node *Node) int {
+func findHeightR(node *Node) int { // RECURSIVE
 	if node == nil {
 		return 0
 	}
-	heightLeft := findHeight(node.lChild)
-	heightRight := findHeight(node.rChild)
+	heightLeft := findHeightR(node.lChild)
+	heightRight := findHeightR(node.rChild)
 	if heightLeft < heightRight {
 		return 1 + heightRight
 	}
 	return 1 + heightLeft
 }
 
+func findHeight(node *Node) int {
+	if node == nil {
+		return 0
+	}
+	queue1 := []*Node{node}
+	height := 0
+	nodeCount := 1
+
+	for nodeCount > 0 {
+		height++
+		newNodeCount := 0
+		current := queue1[0]
+		nodeCount--
+		queue1 = queue1[1:]
+
+		if current.lChild != nil {
+			queue1 = append(queue1, current.lChild)
+			newNodeCount++
+		}
+		if current.rChild != nil {
+			queue1 = append(queue1, current.rChild)
+			newNodeCount++
+		}
+		nodeCount = newNodeCount
+	}
+	return height
+}
+
 // 4. Print values - pre-order; Root-Left-Right (me before my children)
-func preOrder(node *Node) {
+func preOrderR(node *Node) { // RECURSIVE
 	if node == nil {
 		return
 	} else {
@@ -98,8 +126,27 @@ func preOrder(node *Node) {
 	}
 }
 
+func preOrder(node *Node) { // ITERATIVE
+	if node == nil {
+		return
+	}
+	stack1 := []*Node{}
+	stack1 = append(stack1, node)
+	for len(stack1) > 0 {
+		current := stack1[len(stack1)-1]
+		fmt.Println(current.data)
+		stack1 = stack1[:len(stack1)-1]
+		if current.rChild != nil {
+			stack1 = append(stack1, current.rChild)
+		}
+		if current.lChild != nil {
+			stack1 = append(stack1, current.lChild)
+		}
+	}
+}
+
 // 5. Print values - in-order; Left-Root-Right, ascending
-func inOrder(node *Node) {
+func inOrderR(node *Node) { // RECURSIVE
 	if node == nil {
 		return
 	} else {
@@ -108,17 +155,36 @@ func inOrder(node *Node) {
 		inOrder(node.rChild)
 	}
 }
-// 6. Print values - post-order; Left-Right-Root (my children before me)
 
-//func postOrder(node *Node) { // RECURSIVE
-	//if node == nil {
-	//	return
-	//} else {
-	//	postOrder(node.lChild)
-	//	postOrder(node.rChild)
-	//	fmt.Println(node.data)
-	//}
-//}
+func inOrder(node *Node) { // ITERATIVE
+	if node == nil {
+		return
+	}
+	stack1 := []*Node{}
+	current := node
+	for current != nil || len(stack1) > 0 {
+		if current != nil {
+			stack1 = append(stack1, current)
+			current = current.lChild
+		} else if len(stack1) > 0 {
+			current = stack1[len(stack1)-1]
+			stack1 = stack1[:len(stack1)-1]
+			fmt.Println(current.data)
+			current = current.rChild
+		}
+	}
+}
+
+// 6. Print values - post-order; Left-Right-Root (my children before me)
+func postOrderR(node *Node) { // RECURSIVE
+	if node == nil {
+		return
+	} else {
+		postOrder(node.lChild)
+		postOrder(node.rChild)
+		fmt.Println(node.data)
+	}
+}
 
 func postOrder(node *Node) { // ITERATIVE
 	if node == nil {
@@ -146,10 +212,30 @@ func postOrder(node *Node) { // ITERATIVE
 }
 
 // 7. Print values - level-order
-//func (n *BinaryTree) delete(v int) {
-//	if n.root ==
-//}
+func levelOrder(node *Node) {
+	if node == nil {
+		return
+	}
+
+	queue1 := []*Node{node}
+	for len(queue1) > 0 {
+		current := queue1[0]
+		fmt.Println(current.data)
+		queue1 = queue1[1:]
+
+		if current.lChild != nil {
+			queue1 = append(queue1, current.lChild)
+		}
+		if current.rChild != nil {
+			queue1 = append(queue1, current.rChild)
+		}
+	}
+
+}
+
 // 8. Delete a given value from tree
+//func (n *BinaryTree) delete(v int) {
+//}
 
 func main() {
 	//Initialize tree with items
@@ -162,10 +248,14 @@ func main() {
 	fmt.Println(myTree.search(10))
 	fmt.Println("-------height-------")
 	fmt.Println(findHeight(myTree.root))
+	fmt.Println("-------RecursiveHeight-------")
+	fmt.Println(findHeightR(myTree.root))
 	fmt.Println("-------preOrder-------")
 	preOrder(myTree.root)
 	fmt.Println("-------inOrder-------")
 	inOrder(myTree.root)
 	fmt.Println("-------postOrder-------")
 	postOrder(myTree.root)
+	fmt.Println("-------levelOrder-------")
+	levelOrder(myTree.root)
 }
