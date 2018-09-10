@@ -109,18 +109,46 @@ func inOrder(node *Node) {
 	}
 }
 // 6. Print values - post-order; Left-Right-Root (my children before me)
-func postOrder(node *Node) {
+
+//func postOrder(node *Node) { // RECURSIVE
+	//if node == nil {
+	//	return
+	//} else {
+	//	postOrder(node.lChild)
+	//	postOrder(node.rChild)
+	//	fmt.Println(node.data)
+	//}
+//}
+
+func postOrder(node *Node) { // ITERATIVE
 	if node == nil {
 		return
-	} else {
-		postOrder(node.lChild)
-		postOrder(node.rChild)
-		fmt.Println(node.data)
+	}
+	stack1 := []*Node{}
+	stack2 := []*Node{}
+	stack1 = append(stack1, node)
+	for len(stack1) > 0 {
+		temp := stack1[len(stack1)-1]
+		stack1 = stack1[:len(stack1)-1]
+		stack2 = append(stack2, temp)
+		if temp.lChild != nil {
+			stack1 = append(stack1, temp.lChild)
+		}
+		if temp.rChild != nil {
+			stack1 = append(stack1, temp.rChild)
+		}
+	}
+
+	for len(stack2) > 0 {
+		fmt.Println(stack2[len(stack2)-1].data)
+		stack2 = stack2[:len(stack2)-1]
 	}
 }
 
 // 7. Print values - level-order
-
+//func (n *BinaryTree) delete(v int) {
+//	if n.root ==
+//}
 // 8. Delete a given value from tree
 
 func main() {
