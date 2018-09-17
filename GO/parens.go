@@ -29,26 +29,22 @@ func recursiveParens(n int, current string, open int, close int) {
 }
 
 // Array of strings // not currently working
-func recursiveParensArray(n int, current string, results []string, open int, close int) []string {
+func recursiveParensArray(n int, current string, results *[]string, open int, close int) *[]string {
 	if close == n {
-		fmt.Println("done")
-		fmt.Println(current)
+		//fmt.Println("done")
+		*results = append(*results, current)
 		//fmt.Println(results)
-		results = append(results, current)
-		//fmt.Println(results)
-		
+
 		return results
 	} else {
 		if open > close {
 			//fmt.Println("ughhh")
 			newCurrent := current + ")"
-			//fmt.Println(newCurrent)
 			recursiveParensArray(n, newCurrent, results, open, close+1)
 		}
 		if open < n {
 			//fmt.Println("here")
 			newCurrent := current + "("
-			//fmt.Println(newCurrent)
 			recursiveParensArray(n, newCurrent, results, open+1, close)
 		}
 	}
@@ -56,10 +52,10 @@ func recursiveParensArray(n int, current string, results []string, open int, clo
 }
 
 func main() {
-	var myResults []string
+	var myResults = &[]string{}
 	fmt.Println("\n-----print parens-----\n")
 	recursiveParens(2, "", 0, 0)
 	fmt.Println("\n-----print array of parens-----\n")
-	fmt.Println(recursiveParensArray(2, "", myResults, 0, 0 ))
+	fmt.Println(recursiveParensArray(3, "", myResults, 0, 0 ))
 }
 
