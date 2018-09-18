@@ -12,7 +12,6 @@ import "fmt"
 // Strings - one at a time
 func recursiveParens(n int, current string, open int, close int) {
 	if close == n {
-		//fmt.Println("done")
 		fmt.Println(current)
 		return
 	} else {
@@ -28,26 +27,25 @@ func recursiveParens(n int, current string, open int, close int) {
 	return
 }
 
-// Array of strings // not currently working
+// Array of strings
 func recursiveParensArray(n int, current string, results *[]string, open int, close int) *[]string {
 	if close == n {
-		//fmt.Println("done")
+		fmt.Println(current)
 		*results = append(*results, current)
-		//fmt.Println(results)
+
 
 		return results
 	} else {
 		if open > close {
-			//fmt.Println("ughhh")
 			newCurrent := current + ")"
 			recursiveParensArray(n, newCurrent, results, open, close+1)
 		}
 		if open < n {
-			//fmt.Println("here")
 			newCurrent := current + "("
 			recursiveParensArray(n, newCurrent, results, open+1, close)
 		}
 	}
+	fmt.Println(len(*results))
 	return results
 }
 
