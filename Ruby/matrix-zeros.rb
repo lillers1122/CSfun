@@ -1,7 +1,7 @@
 def matrixZeros(mat)
     return if mat.nil?
-
     rows, columns = toChangeHelper(mat)
+
     rows.each do |i|
         j = 0
         while j < mat.length
@@ -17,11 +17,10 @@ def matrixZeros(mat)
             i += 1
         end
     end
-
     return mat
 end
 
-def toChangeHelper(mat)
+def toChangeHelper(mat) # O(nm) where n is length of outer array and m is length of a subarray
     rows = []
     columns = []
     i = 0
@@ -48,8 +47,5 @@ matrix2 = [[1,1,0,1],
           [3,3,3,3],
           [4,0,4,4]]
 
-puts ""
 p matrixZeros(matrix)
-puts ""
 p matrixZeros(matrix2)
-puts ""
