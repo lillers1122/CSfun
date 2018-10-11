@@ -7,7 +7,7 @@ def flood_fill(matrix, coor1, coor2, v)
   previous = matrix[coor1][coor2]
   matrix[coor1][coor2] = v
 
-  directions = [[0,1],[0,-1],[1,0],[-1,0],] #R,L,B,T
+  directions = [[0,1],[0,-1],[1,0],[-1,0]] #R,L,B,T
 
   directions.each do |coords|
     coords[0] += coor1
